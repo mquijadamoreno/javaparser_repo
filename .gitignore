@@ -1,3 +1,4 @@
+antipatterndetector/target/
 # Compiled source #
 ###################
 *.com
@@ -26,9 +27,13 @@
 *.sql
 *.sqlite
 
-# Eclipse workspace files #
-###########################
+# Other files #
+###############
 .metadata*
+*.classpath
+*.project
+*.prefs
+
 
 # OS generated files #
 ######################
