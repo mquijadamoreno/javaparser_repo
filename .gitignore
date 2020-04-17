@@ -33,6 +33,7 @@ antipatterndetector/target/
 *.classpath
 *.project
 *.prefs
+*.recommenders
 
 
 # OS generated files #
