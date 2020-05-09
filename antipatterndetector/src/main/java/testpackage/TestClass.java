@@ -33,6 +33,10 @@ public class TestClass {
 	public void method1(String string) {
 		this.method1();
 		this.att1 = "b";
+		String lul = "string";
+		if(this.att1==lul) {
+			System.out.println("lul");
+		}
 	}
 	
 	public void method1(Integer integer) {
