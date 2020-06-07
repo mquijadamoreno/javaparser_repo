@@ -7,5 +7,9 @@ public class TestClassA {
 		b = num + 1;
 		return b;
 	}
+	
+	public int methodB(Integer num) {
+		return num + 3;
+	}
 
 }

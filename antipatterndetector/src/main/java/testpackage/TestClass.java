@@ -72,9 +72,8 @@ public class TestClass extends TestClassA {
 	@Override
 	@Deprecated
 	public int methodA(Integer num) {
-		//super.methodA(num)
-		Integer a = num + 2;
-		return a;
+		Integer b = super.methodB(num);
+		return super.methodB(b);
 	}
 
 }

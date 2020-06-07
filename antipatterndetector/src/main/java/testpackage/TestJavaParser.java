@@ -8,6 +8,7 @@ import detectors.FillCollectionDetector;
 import detectors.MethodOverloadDetector;
 import detectors.SetAndGetDetector;
 import detectors.Ocurrence;
+import detectors.OverrideContentMethodSuperCallDetector;
 import detectors.StringEqualsDetector;
 import detectors.SuperCallOverrideMethodDetector;
 
@@ -43,5 +44,9 @@ public class TestJavaParser {
 		System.out.println("** TEST SUPER CALL METHOD OVERRIDE **");
 		AbstractDetector superCallOverrideMethodDetector = new SuperCallOverrideMethodDetector(FILE_PATH);
 		superCallOverrideMethodDetector.detect();
+		
+		System.out.println("** TEST SUPER CALL METHOD CONTENT OVERRIDE **");
+		AbstractDetector overrideContentMethodSuperCallDetector = new OverrideContentMethodSuperCallDetector(FILE_PATH);
+		overrideContentMethodSuperCallDetector.detect();
 	}
 }

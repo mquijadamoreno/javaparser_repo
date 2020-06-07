@@ -4,12 +4,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.collections4.CollectionUtils;
+import java.util.stream.Collectors;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.SuperExpr;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 
@@ -29,13 +29,31 @@ public class SuperCallOverrideMethodDetector extends AbstractDetector {
 	public void detect() {
 		parse();
 		retrieveMethodNames();
+		extractOverrideMethods();
+		boolean superCallFound;
 		for (MethodDeclaration method : methodDeclarations) {
-			if( method.findAll(MarkerAnnotationExpr.class).toString().contains("@Override") && CollectionUtils.isEmpty(method.findAll(SuperExpr.class))) {
+			superCallFound = false;
+			for (MethodCallExpr methodCallExpr : method.findAll(MethodCallExpr.class)) {
+				if (methodCallExpr.findAll(SuperExpr.class).size() > 0
+						&& methodCallExpr.getName().equals(method.getName())) {
+					superCallFound = true;
+					break;
+				}
+			}
+			if(!superCallFound) {
 				System.out.println("Detected in method : " + method.getNameAsString());
-				System.out.println("Overrided methods should contain a call to super method");
+				System.out.println("Overrided methods should contain a call to its super method!");
 			}
 			
 		}
+	}
+	
+	private void extractOverrideMethods() {
+		List<MethodDeclaration> methodDeclarationsAux = methodDeclarations.stream()
+				.filter(m -> m.findAll(MarkerAnnotationExpr.class).toString().contains("@Override"))
+				.collect(Collectors.toList());
+		methodDeclarations.clear();
+		methodDeclarations.addAll(methodDeclarationsAux);
 	}
 
 	private void retrieveMethodNames() {
