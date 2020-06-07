@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TestClass {
+public class TestClass extends TestClassA {
 	
 	private String att1;
 	private Integer att2;
@@ -67,6 +67,14 @@ public class TestClass {
 		for (String string : arrayList) {
 			stringList.add(new String(string));
 		}
+	}
+	
+	@Override
+	@Deprecated
+	public int methodA(Integer num) {
+		//super.methodA(num)
+		Integer a = num + 2;
+		return a;
 	}
 
 }

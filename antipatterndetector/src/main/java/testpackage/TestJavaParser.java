@@ -9,6 +9,7 @@ import detectors.MethodOverloadDetector;
 import detectors.SetAndGetDetector;
 import detectors.Ocurrence;
 import detectors.StringEqualsDetector;
+import detectors.SuperCallOverrideMethodDetector;
 
 public class TestJavaParser {
 
@@ -38,5 +39,9 @@ public class TestJavaParser {
 		System.out.println("** TEST ATTRIBUTES MODIFIERS **");
 		AbstractDetector setAndGetDetector = new SetAndGetDetector(FILE_PATH);
 		setAndGetDetector.detect();
+		
+		System.out.println("** TEST SUPER CALL METHOD OVERRIDE **");
+		AbstractDetector superCallOverrideMethodDetector = new SuperCallOverrideMethodDetector(FILE_PATH);
+		superCallOverrideMethodDetector.detect();
 	}
 }
