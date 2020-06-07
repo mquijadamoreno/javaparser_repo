@@ -15,6 +15,15 @@ public class VisitorFactory {
 		case BINARY_EXPR_VISITOR:
 			visitor = new BinaryExprVisitor();
 			break;
+		case FOR_VISITOR:
+			visitor = new ForVisitor();
+			break;
+		case FOREACH_VISITOR:
+			visitor = new ForEachVisitor();
+			break;
+		case CONSTRUCTOR_VISITOR:
+			visitor = new ConstructorDeclarationVisitor();
+			break;
 		default:
 			break;
 			

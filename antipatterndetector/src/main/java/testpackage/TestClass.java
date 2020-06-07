@@ -1,13 +1,23 @@
 package testpackage;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 public class TestClass {
 	
 	private String att1;
 	private Integer att2;
+	private List<String> stringList;
 	
 	public TestClass() {
 		this.att1 = "testClass att1";
 		this.att2 = 2;
+	}
+	
+	public TestClass(Integer num) {
+		this();
+		this.att2 = num;
 	}
 
 	public String getAtt1() {
@@ -42,6 +52,21 @@ public class TestClass {
 	public void method1(Integer integer) {
 		this.method1();
 		this.att1 = "c";
+	}
+	
+	public void method3() {
+		List<String> arrayList = new ArrayList<String>();
+		stringList = new LinkedList<String>();
+		arrayList.add("string 1");
+		arrayList.add("string 2");
+		arrayList.add("string 3");
+		for(int i = 0; i < arrayList.size(); i++) {
+			stringList.add(new String(arrayList.get(i)));
+			//System.out.println("pepega");
+		}
+		for (String string : arrayList) {
+			stringList.add(new String(string));
+		}
 	}
 
 }

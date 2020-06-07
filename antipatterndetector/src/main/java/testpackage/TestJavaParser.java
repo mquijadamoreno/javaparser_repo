@@ -3,6 +3,8 @@ package testpackage;
 import java.io.FileNotFoundException;
 
 import detectors.AbstractDetector;
+import detectors.ConstructorOverloadDetector;
+import detectors.FillCollectionDetector;
 import detectors.MethodOverloadDetector;
 import detectors.Ocurrence;
 import detectors.StringEqualsDetector;
@@ -24,5 +26,12 @@ public class TestJavaParser {
 		AbstractDetector stringEqualsDetector = new StringEqualsDetector(FILE_PATH2);
 		stringEqualsDetector.detect();
 		
+		System.out.println("** TEST FOR STATEMENTS **");
+		AbstractDetector fillCollectionDetector = new FillCollectionDetector(FILE_PATH);
+		fillCollectionDetector.detect();
+		
+		System.out.println("** TEST CONSTRUCTOR OVERLOAD **");
+		AbstractDetector constructorOverloadDetector = new ConstructorOverloadDetector(FILE_PATH);
+		constructorOverloadDetector.detect();
 	}
 }
