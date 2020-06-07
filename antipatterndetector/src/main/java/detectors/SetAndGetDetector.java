@@ -16,14 +16,14 @@ import com.github.javaparser.ast.visitor.VoidVisitor;
 import utils.VisitorEnum;
 
 @SuppressWarnings("unchecked")
-public class ModifiersDetector extends AbstractDetector {
+public class SetAndGetDetector extends AbstractDetector {
 
 	private List<FieldDeclaration> fieldDeclarations;
 	private List<String> attributeNames;
 	private List<String> methodNames;
 
-	public ModifiersDetector(String file_path) throws FileNotFoundException {
-		super(ModifiersDetector.class.getName(), file_path);
+	public SetAndGetDetector(String file_path) throws FileNotFoundException {
+		super(SetAndGetDetector.class.getName(), file_path);
 		fieldDeclarations = new ArrayList<FieldDeclaration>();
 		attributeNames = new ArrayList<String>();
 	}
