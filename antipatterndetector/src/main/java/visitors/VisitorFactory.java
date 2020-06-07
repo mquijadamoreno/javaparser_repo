@@ -24,6 +24,9 @@ public class VisitorFactory {
 		case CONSTRUCTOR_VISITOR:
 			visitor = new ConstructorDeclarationVisitor();
 			break;
+		case ATTRIBUTES_VISITOR:
+			visitor = new AttributesVisitor();
+			break;
 		default:
 			break;
 			

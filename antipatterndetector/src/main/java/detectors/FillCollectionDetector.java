@@ -24,7 +24,6 @@ public class FillCollectionDetector extends AbstractDetector {
 
 	public FillCollectionDetector(String name, String file_path) throws FileNotFoundException {
 		super(name, file_path);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public FillCollectionDetector(String file_path) throws FileNotFoundException {
@@ -82,7 +81,6 @@ public class FillCollectionDetector extends AbstractDetector {
 		try {
 			this.cu = JavaParser.parse(new FileInputStream(file_path));
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

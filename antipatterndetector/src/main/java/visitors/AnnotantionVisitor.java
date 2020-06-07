@@ -13,7 +13,6 @@ public class AnnotantionVisitor extends VoidVisitorAdapter<Object> {
 	
 	@Override
 	public void visit(MarkerAnnotationExpr n, Object arg) {
-		// TODO Auto-generated method stub
 		super.visit(n, arg);
 	}
 

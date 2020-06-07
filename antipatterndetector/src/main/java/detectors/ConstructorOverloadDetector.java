@@ -55,7 +55,6 @@ public class ConstructorOverloadDetector extends AbstractDetector {
 		try {
 			this.cu = JavaParser.parse(new FileInputStream(file_path));
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

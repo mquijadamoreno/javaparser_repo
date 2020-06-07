@@ -6,6 +6,7 @@ import detectors.AbstractDetector;
 import detectors.ConstructorOverloadDetector;
 import detectors.FillCollectionDetector;
 import detectors.MethodOverloadDetector;
+import detectors.ModifiersDetector;
 import detectors.Ocurrence;
 import detectors.StringEqualsDetector;
 
@@ -33,5 +34,9 @@ public class TestJavaParser {
 		System.out.println("** TEST CONSTRUCTOR OVERLOAD **");
 		AbstractDetector constructorOverloadDetector = new ConstructorOverloadDetector(FILE_PATH);
 		constructorOverloadDetector.detect();
+		
+		System.out.println("** TEST ATTRIBUTES MODIFIERS **");
+		AbstractDetector modifiersDetector = new ModifiersDetector(FILE_PATH);
+		modifiersDetector.detect();
 	}
 }
