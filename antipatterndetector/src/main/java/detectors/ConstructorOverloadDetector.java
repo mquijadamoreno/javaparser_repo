@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 
 import com.github.javaparser.JavaParser;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.stmt.ExplicitConstructorInvocationStmt;
 import com.github.javaparser.ast.visitor.VoidVisitor;
@@ -20,7 +21,7 @@ public class ConstructorOverloadDetector extends AbstractDetector {
 	private List<ConstructorDeclaration> constructorDeclarations;
 
 	public ConstructorOverloadDetector(String file_path) throws FileNotFoundException {
-		super(MethodOverloadDetector.class.getName(), file_path);
+		super(ConstructorOverloadDetector.class.getName(), file_path);
 		this.constructorDeclarations = new ArrayList<ConstructorDeclaration>();
 	}
 
@@ -30,16 +31,24 @@ public class ConstructorOverloadDetector extends AbstractDetector {
 		retrieveMethodNames();
 		analyzeConstructors();
 	}
-	
+
 	private void analyzeConstructors() {
-		if (constructorDeclarations.size() > 1) {
+		Integer numOfConstructorDeclarations = constructorDeclarations.size();
+		Integer numOfTimesThisCallExpr = 0;
+		if (numOfConstructorDeclarations > 1) {
+
+			ClassOrInterfaceDeclaration cid = (ClassOrInterfaceDeclaration) constructorDeclarations.get(0)
+					.getParentNode().get();
+
 			for (ConstructorDeclaration ocurrence : constructorDeclarations) {
 				if (CollectionUtils.isNotEmpty(ocurrence.getBody().findAll(ExplicitConstructorInvocationStmt.class))) {
-					System.out.println(
-							"Calling \"this()\" from an overload constructor. \n This ocurrence should happen at least "
-									+ (constructorDeclarations.size() - 1) + " times");
+					numOfTimesThisCallExpr++;
 				}
 
+			}
+
+			if (numOfTimesThisCallExpr != (numOfConstructorDeclarations - 1)) {
+				this.addOcurrence(new Ocurrence("undefined", this.reason, cid.getNameAsString()+".java"));
 			}
 		}
 	}

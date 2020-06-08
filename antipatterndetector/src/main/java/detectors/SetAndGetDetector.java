@@ -7,7 +7,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import com.github.javaparser.JavaParser;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
@@ -32,21 +35,22 @@ public class SetAndGetDetector extends AbstractDetector {
 	public void detect() {
 		parse();
 		retrieveFieldDeclarations();
-		parseAttributeNames();
-		retrieveMethodNames();
+		if (CollectionUtils.isNotEmpty(fieldDeclarations)) {
+			parseAttributeNames();
+			retrieveMethodNames();
 
-		String setName, getName;
-		for (String attribute : attributeNames) {
-			setName = "set"  + attribute;
-			getName = "get" + attribute;
-			System.out.println("Searching for methods : " + setName + " and " + getName + "...");
-			if (!methodNames.contains(setName) || !methodNames.contains(getName)) {
-				System.out.println("[" + attribute + "] set or get method not found!");
-				System.out.println("Setters and getters methods should be defined for every attribute");
-			} else {
-				System.out.println("Methods found!");
+			String setName, getName;
+			for (String attribute : attributeNames) {
+				setName = "set" + attribute;
+				getName = "get" + attribute;
+				if (!methodNames.contains(setName) || !methodNames.contains(getName)) {
+					this.addOcurrence(new Ocurrence("undefined", this.reason,
+							((ClassOrInterfaceDeclaration) this.fieldDeclarations.get(0).getParentNode().get())
+									.getNameAsString()+".java"));
+				}
 			}
 		}
+
 	}
 
 	@Override
@@ -62,7 +66,7 @@ public class SetAndGetDetector extends AbstractDetector {
 		String attribute;
 		for (FieldDeclaration field : fieldDeclarations) {
 			attribute = field.findAll(VariableDeclarator.class).toString().replace("[", "").replace("]", "");
-			attributeNames.add(attribute.substring(0,1).toUpperCase() + attribute.substring(1));
+			attributeNames.add(attribute.substring(0, 1).toUpperCase() + attribute.substring(1));
 		}
 	}
 
@@ -80,6 +84,5 @@ public class SetAndGetDetector extends AbstractDetector {
 		methodNames = Collections.unmodifiableList(
 				methodDeclarations.stream().map(MethodDeclaration::getNameAsString).collect(Collectors.toList()));
 	}
-	
 
 }

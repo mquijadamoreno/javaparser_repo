@@ -64,8 +64,7 @@ public class StringEqualsDetector extends AbstractDetector {
 			
 			if(left.isReferenceType() && right.isReferenceType()) {
 				if(left.asReferenceType().getQualifiedName().equals("java.lang.String") && right.asReferenceType().getQualifiedName().equals("java.lang.String")) {
-					System.out.println("Igualdad de strings detectada, expresión: ");
-					System.out.println(binaryExpr);
+					this.addOcurrence(new Ocurrence(binaryExpr.getRange().get().toString(), this.reason, "TestClass.java"));
 				}
 			}
 		}

@@ -12,6 +12,4 @@ public class MethodDeclarationVisitor extends VoidVisitorAdapter<List<MethodDecl
 		super.visit(methodDeclaration, collector);
 		collector.add(methodDeclaration);
 	}
-	
-
 }

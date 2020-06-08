@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.github.javaparser.JavaParser;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
@@ -41,8 +42,8 @@ public class SuperCallOverrideMethodDetector extends AbstractDetector {
 				}
 			}
 			if(!superCallFound) {
-				System.out.println("Detected in method : " + method.getNameAsString());
-				System.out.println("Overrided methods should contain a call to its super method!");
+				this.addOcurrence(new Ocurrence(method.getRange().get().toString(), this.reason, 
+								((ClassOrInterfaceDeclaration) method.getParentNode().get()).getNameAsString()+ ".java, in method : " + method.getDeclarationAsString(false, false)));
 			}
 			
 		}

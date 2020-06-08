@@ -2,23 +2,16 @@ package detectors;
 
 public class Ocurrence {
 	
-	private Integer line;
+	private String range;
 	private String reason;
 	private String class_detected;
 	
-	public Ocurrence(Integer line, String reason, String class_detected) {
-		this.line = line;
+	public Ocurrence(String range, String reason, String class_detected) {
+		this.range = range;
 		this.reason = reason;
 		this.class_detected = class_detected;
 	}
 	
-	
-	public Integer getLine() {
-		return line;
-	}
-	public void setLine(Integer line) {
-		this.line = line;
-	}
 	public String getReason() {
 		return reason;
 	}
@@ -32,9 +25,19 @@ public class Ocurrence {
 		this.class_detected = class_detected;
 	}
 	
+	public String getRange() {
+		return range;
+	}
+
+	public void setRange(String range) {
+		this.range = range;
+	}
+	
 	@Override
 	public String toString() {
-		return this.reason + " Detected in class: " + this.class_detected + ", line: " + this.line;
+		return this.reason + " \n Detected in: " + this.class_detected + ", range: " + this.range;
 	}
+
+	
 
 }

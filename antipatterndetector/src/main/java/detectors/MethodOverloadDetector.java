@@ -11,14 +11,17 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import com.github.javaparser.JavaParser;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.ThisExpr;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 
 import utils.VisitorEnum;
 
 @SuppressWarnings("unchecked")
 public class MethodOverloadDetector extends AbstractDetector {
-	
+
 	private List<MethodDeclaration> methodDeclarations;
 
 	public MethodOverloadDetector(String file_path) throws FileNotFoundException {
@@ -30,59 +33,59 @@ public class MethodOverloadDetector extends AbstractDetector {
 	public void detect() {
 		parse();
 		retrieveMethodNames();
-		List<String> duplicates = retrieveDuplicates();
-		Boolean encounteredOne = false;
-		if(duplicates.size() > 0) {
-			for (String methodName : duplicates) {
-				for (MethodDeclaration methodDeclaration : methodDeclarations) {
-					if(methodName.equals(methodDeclaration.getNameAsString()) && !methodDeclaration.getBody().toString().contains(methodName)) {
-						if(!encounteredOne) {
-							encounteredOne = true;
-						} else {
-							this.ocurrences.add(new Ocurrence(0,"When overloading more than 2 times a method, the method should contain a call of a common method", "class"));
-							break;
-						}										
+		retrieveDuplicates();
+		if(methodDeclarations.size() > 2) {
+			Integer numberOfThisCalls = 0;
+			for (MethodDeclaration method : methodDeclarations) {
+				for (MethodCallExpr methodCall : method.findAll(MethodCallExpr.class)) {
+					if (methodCall.getNameAsString().equals(method.getNameAsString())
+							&& methodCall.getScope().get() instanceof ThisExpr) {
+						numberOfThisCalls++;
+						break;
 					}
 				}
 			}
-			
-		} else {
-			System.out.println("NO Method Overload");
+
+			if (numberOfThisCalls != (methodDeclarations.size() - 1)) {
+				this.addOcurrence(new Ocurrence("undefined", this.reason,
+						((ClassOrInterfaceDeclaration) methodDeclarations.get(0).getParentNode().get()).getNameAsString()+".java"));
+			}
 		}
 		
+
 	}
-	
-	private void retrieveMethodNames(){
-		VoidVisitor<List<MethodDeclaration>> visitor = (VoidVisitor<List<MethodDeclaration>>) this.visitorFactory.getVisitor(VisitorEnum.METHOD_NAME_VISITOR);
+
+	private void retrieveMethodNames() {
+		VoidVisitor<List<MethodDeclaration>> visitor = (VoidVisitor<List<MethodDeclaration>>) this.visitorFactory
+				.getVisitor(VisitorEnum.METHOD_NAME_VISITOR);
 		visitor.visit(this.cu, methodDeclarations);
 	}
-	
-	private List<String> retrieveDuplicates() {
-		Map<String,Integer> methodsMap = new HashMap<>();
-		List<String> duplicates = new ArrayList<String>();
-		List<String> methodNames = methodDeclarations.stream().map(MethodDeclaration::getNameAsString).collect(Collectors.toList());
-		
+
+	private void retrieveDuplicates() {
+		Map<String, Integer> methodsMap = new HashMap<>();
+		List<String> duplicates;
+		List<String> methodNames = methodDeclarations.stream().map(MethodDeclaration::getNameAsString)
+				.collect(Collectors.toList());
+
 		Integer count = 0;
 		for (String method : methodNames) {
 			count = methodsMap.get(method);
-			if(count == null) {
+			if (count == null) {
 				methodsMap.put(method, 1);
 			} else {
 				methodsMap.put(method, ++count);
 			}
 		}
-		
-		for (Entry<String,Integer> entry : methodsMap.entrySet()) {
-			if(entry.getValue() > 2) {
-				duplicates.add(entry.getKey());
-			}
-		}
-		
-		return duplicates;
+
+		duplicates = methodsMap.entrySet().stream().filter(md -> md.getValue() > 2).map(Entry<String, Integer>::getKey)
+				.collect(Collectors.toList());
+		methodDeclarations = methodDeclarations.stream().filter(md -> duplicates.contains(md.getNameAsString()))
+				.collect(Collectors.toList());
 	}
 
 	public List<String> getMethodNames() {
-		return Collections.unmodifiableList(methodDeclarations.stream().map(MethodDeclaration::getNameAsString).collect(Collectors.toList()));
+		return Collections.unmodifiableList(
+				methodDeclarations.stream().map(MethodDeclaration::getNameAsString).collect(Collectors.toList()));
 	}
 
 	@Override
@@ -93,8 +96,5 @@ public class MethodOverloadDetector extends AbstractDetector {
 			e.printStackTrace();
 		}
 	}
-
-	
-	
 
 }

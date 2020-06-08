@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.github.javaparser.JavaParser;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
@@ -39,12 +40,10 @@ public class OverrideContentMethodSuperCallDetector extends AbstractDetector {
 
 					if (checkIfDetected(method.findAll(SuperExpr.class).size(),
 							method.findAll(ExpressionStmt.class).size(), method.findAll(ReturnStmt.class).size())) {
-
-						System.out.println("The method only contains calls to super!");
+						this.addOcurrence(new Ocurrence(method.getRange().get().toString(), this.reason,
+								((ClassOrInterfaceDeclaration) method.getParentNode().get()).getNameAsString()+ ".java, in method : " + method.getDeclarationAsString(false, false)));
 						break;
 					}
-					;
-
 				}
 			}
 		}

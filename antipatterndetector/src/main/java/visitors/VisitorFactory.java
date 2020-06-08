@@ -29,7 +29,6 @@ public class VisitorFactory {
 			break;
 		default:
 			break;
-			
 		}
 		return visitor;
 	}

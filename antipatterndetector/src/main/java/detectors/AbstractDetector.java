@@ -1,9 +1,11 @@
 package detectors;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Properties;
 
 import com.github.javaparser.ast.CompilationUnit;
 
@@ -16,22 +18,31 @@ public abstract class AbstractDetector implements IDetector {
 	public VisitorFactory visitorFactory;
 	protected CompilationUnit cu;
 	protected String file_path;
-	
-	
+	protected Properties detectorProperties;
+	protected String reason;
+
 	public AbstractDetector(String name, String file_path) throws FileNotFoundException {
 		this.name = name;
 		this.ocurrences = new ArrayList<Ocurrence>();
 		this.visitorFactory = new VisitorFactory();
 		this.file_path = file_path;
+		this.detectorProperties = new Properties();
+		try {
+			detectorProperties.load(this.getClass().getResourceAsStream("/resources/detectorsDescription.properties"));
+			this.reason = detectorProperties.getProperty(this.name);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
-	
+
 	public void addOcurrence(Ocurrence ocurrence) {
 		this.ocurrences.add(ocurrence);
 	}
-	
-	public Collection<Ocurrence> getOcurrences(){
+
+	public Collection<Ocurrence> getOcurrences() {
 		return Collections.unmodifiableCollection(ocurrences);
 	}
-	
+
 	protected abstract void parse();
 }

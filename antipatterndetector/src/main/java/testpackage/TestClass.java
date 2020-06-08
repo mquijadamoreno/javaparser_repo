@@ -16,7 +16,6 @@ public class TestClass extends TestClassA {
 	}
 	
 	public TestClass(Integer num) {
-		this();
 		this.att2 = num;
 	}
 
@@ -50,7 +49,6 @@ public class TestClass extends TestClassA {
 	}
 	
 	public void method1(Integer integer) {
-		this.method1();
 		this.att1 = "c";
 	}
 	
@@ -74,6 +72,11 @@ public class TestClass extends TestClassA {
 	public int methodA(Integer num) {
 		Integer b = super.methodB(num);
 		return super.methodB(b);
+	}
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 
 }
