@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 public class TestClass extends TestClassA {
 	
 	private String att1;
 	private Integer att2;
 	private List<String> stringList;
+	private LinkedList<String> stringList2;
 	
 	public TestClass() {
 		this.att1 = "testClass att1";
@@ -37,6 +40,8 @@ public class TestClass extends TestClassA {
 	
 	public void method1() {
 		this.att1 = "a";
+		this.stringList2 = new LinkedList<String>();
+		stringList2.get(0);
 	}
 	
 	public void method1(String string) {
@@ -77,6 +82,15 @@ public class TestClass extends TestClassA {
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
+	}
+
+	public List<String> getStringList() {
+		List<String> auxList = new ArrayList<String>(this.stringList);
+		return auxList;
+	}
+
+	public void setStringList(List<String> stringList) {
+		this.stringList = stringList;
 	}
 
 }

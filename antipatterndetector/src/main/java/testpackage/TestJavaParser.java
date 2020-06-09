@@ -6,6 +6,8 @@ import java.util.Collection;
 import detectors.AbstractDetector;
 import detectors.ConstructorOverloadDetector;
 import detectors.FillCollectionDetector;
+import detectors.GetCollectionDetector;
+import detectors.LinkedListGetDetector;
 import detectors.MethodOverloadDetector;
 import detectors.SetAndGetDetector;
 import detectors.Ocurrence;
@@ -67,6 +69,17 @@ public class TestJavaParser {
 		cloneDetector.detect();
 		printOcurrences(cloneDetector.getOcurrences());
 		printLineSeparator();
+		
+		System.out.println("** TEST USE OF GET TO ACCESS A LINKEDLIST **");
+		AbstractDetector getLinkedListDetector = new LinkedListGetDetector(FILE_PATH2);
+		getLinkedListDetector.detect();
+		//TODO: build ocurrences
+		printLineSeparator();
+		
+		System.out.println("** TEST GET COLLECTION **");
+		AbstractDetector getCollectionDetector = new GetCollectionDetector(FILE_PATH2);
+		getCollectionDetector.detect();
+		
 		
 	}
 	

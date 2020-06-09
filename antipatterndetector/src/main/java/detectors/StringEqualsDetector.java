@@ -37,7 +37,6 @@ public class StringEqualsDetector extends AbstractDetector {
 
 	@Override
 	protected void parse() {
-
 		try {
 			CombinedTypeSolver typeSolver = new CombinedTypeSolver();
 			typeSolver.add(new JavaParserTypeSolver(new File(this.file_path)));

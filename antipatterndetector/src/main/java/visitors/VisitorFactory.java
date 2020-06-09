@@ -27,6 +27,9 @@ public class VisitorFactory {
 		case ATTRIBUTES_VISITOR:
 			visitor = new AttributesVisitor();
 			break;
+		case METHOD_CALL_EXPR_VISITOR:
+			visitor = new MethodCallExprVisitor();
+			break;
 		default:
 			break;
 		}
