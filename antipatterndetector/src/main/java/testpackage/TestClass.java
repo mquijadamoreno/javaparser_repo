@@ -1,10 +1,9 @@
 package testpackage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 public class TestClass extends TestClassA {
 	
@@ -85,8 +84,7 @@ public class TestClass extends TestClassA {
 	}
 
 	public List<String> getStringList() {
-		List<String> auxList = new ArrayList<String>(this.stringList);
-		return auxList;
+		return this.stringList;
 	}
 
 	public void setStringList(List<String> stringList) {

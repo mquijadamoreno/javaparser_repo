@@ -1,6 +1,5 @@
 package detectors;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,13 +8,13 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 
+import utils.JavaCompilationUnit;
 import utils.VisitorEnum;
 
 @SuppressWarnings("unchecked")
@@ -25,15 +24,14 @@ public class SetAndGetDetector extends AbstractDetector {
 	private List<String> attributeNames;
 	private List<String> methodNames;
 
-	public SetAndGetDetector(String file_path) throws FileNotFoundException {
-		super(SetAndGetDetector.class.getName(), file_path);
+	public SetAndGetDetector(JavaCompilationUnit jcu) throws FileNotFoundException {
+		super(SetAndGetDetector.class.getName(), jcu);
 		fieldDeclarations = new ArrayList<FieldDeclaration>();
 		attributeNames = new ArrayList<String>();
 	}
 
 	@Override
 	public void detect() {
-		parse();
 		retrieveFieldDeclarations();
 		if (CollectionUtils.isNotEmpty(fieldDeclarations)) {
 			parseAttributeNames();
@@ -53,14 +51,6 @@ public class SetAndGetDetector extends AbstractDetector {
 
 	}
 
-	@Override
-	protected void parse() {
-		try {
-			this.cu = JavaParser.parse(new FileInputStream(file_path));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
 
 	private void parseAttributeNames() {
 		String attribute;

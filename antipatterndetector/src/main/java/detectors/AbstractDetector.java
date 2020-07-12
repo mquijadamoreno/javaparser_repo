@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import com.github.javaparser.ast.CompilationUnit;
 
+import utils.JavaCompilationUnit;
 import visitors.VisitorFactory;
 
 public abstract class AbstractDetector implements IDetector {
@@ -21,11 +22,12 @@ public abstract class AbstractDetector implements IDetector {
 	protected Properties detectorProperties;
 	protected String reason;
 
-	public AbstractDetector(String name, String file_path) throws FileNotFoundException {
+	public AbstractDetector(String name, JavaCompilationUnit jcu) throws FileNotFoundException {
 		this.name = name;
+		this.cu = jcu.getCompilationUnit();
+		this.file_path = jcu.getFilePath();
 		this.ocurrences = new ArrayList<Ocurrence>();
 		this.visitorFactory = new VisitorFactory();
-		this.file_path = file_path;
 		this.detectorProperties = new Properties();
 		try {
 			detectorProperties.load(this.getClass().getResourceAsStream("/resources/detectorsDescription.properties"));
@@ -44,5 +46,4 @@ public abstract class AbstractDetector implements IDetector {
 		return Collections.unmodifiableCollection(ocurrences);
 	}
 
-	protected abstract void parse();
 }

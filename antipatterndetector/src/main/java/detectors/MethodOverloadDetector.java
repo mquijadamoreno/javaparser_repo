@@ -1,6 +1,5 @@
 package detectors;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,13 +9,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.ThisExpr;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 
+import utils.JavaCompilationUnit;
 import utils.VisitorEnum;
 
 @SuppressWarnings("unchecked")
@@ -24,14 +23,13 @@ public class MethodOverloadDetector extends AbstractDetector {
 
 	private List<MethodDeclaration> methodDeclarations;
 
-	public MethodOverloadDetector(String file_path) throws FileNotFoundException {
-		super(MethodOverloadDetector.class.getName(), file_path);
+	public MethodOverloadDetector(JavaCompilationUnit jcu) throws FileNotFoundException {
+		super(MethodOverloadDetector.class.getName(), jcu);
 		this.methodDeclarations = new ArrayList<MethodDeclaration>();
 	}
 
 	@Override
 	public void detect() {
-		parse();
 		retrieveMethodNames();
 		retrieveDuplicates();
 		if(methodDeclarations.size() > 2) {
@@ -86,15 +84,6 @@ public class MethodOverloadDetector extends AbstractDetector {
 	public List<String> getMethodNames() {
 		return Collections.unmodifiableList(
 				methodDeclarations.stream().map(MethodDeclaration::getNameAsString).collect(Collectors.toList()));
-	}
-
-	@Override
-	protected void parse() {
-		try {
-			this.cu = JavaParser.parse(new FileInputStream(file_path));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

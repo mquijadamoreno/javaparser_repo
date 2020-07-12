@@ -1,12 +1,10 @@
 package detectors;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
@@ -14,6 +12,7 @@ import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.SuperExpr;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 
+import utils.JavaCompilationUnit;
 import utils.VisitorEnum;
 
 @SuppressWarnings("unchecked")
@@ -21,14 +20,13 @@ public class SuperCallOverrideMethodDetector extends AbstractDetector {
 
 	private List<MethodDeclaration> methodDeclarations;
 
-	public SuperCallOverrideMethodDetector(String file_path) throws FileNotFoundException {
-		super(SuperCallOverrideMethodDetector.class.getName(), file_path);
+	public SuperCallOverrideMethodDetector(JavaCompilationUnit jcu) throws FileNotFoundException {
+		super(SuperCallOverrideMethodDetector.class.getName(), jcu);
 		methodDeclarations = new ArrayList<MethodDeclaration>();
 	}
 
 	@Override
 	public void detect() {
-		parse();
 		retrieveMethodNames();
 		extractOverrideMethods();
 		boolean superCallFound;
@@ -62,15 +60,6 @@ public class SuperCallOverrideMethodDetector extends AbstractDetector {
 				.getVisitor(VisitorEnum.METHOD_NAME_VISITOR);
 		visitor2.visit(this.cu, methodDeclarations);
 
-	}
-
-	@Override
-	protected void parse() {
-		try {
-			this.cu = JavaParser.parse(new FileInputStream(file_path));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
 	}
 
 }
