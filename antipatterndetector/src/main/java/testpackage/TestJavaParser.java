@@ -6,6 +6,7 @@ import java.util.Collection;
 import detectors.AbstractDetector;
 import detectors.ConstructorOverloadDetector;
 import detectors.FillCollectionDetector;
+import detectors.FinalAttributeSetDetector;
 import detectors.GetCollectionDetector;
 import detectors.LinkedListGetDetector;
 import detectors.MethodOverloadDetector;
@@ -86,6 +87,13 @@ public class TestJavaParser {
 		getCollectionDetector.detect();
 		printOcurrences(getCollectionDetector.getOcurrences());
 		printLineSeparator();
+		
+		System.out.println("** TEST FINAL ATTRIBUTE SET DETECTOR **");
+		AbstractDetector finalAttributeSetDetector = new FinalAttributeSetDetector(jcu);
+		finalAttributeSetDetector.detect();
+		printOcurrences(finalAttributeSetDetector.getOcurrences());
+		printLineSeparator();
+		
 		
 	}
 	

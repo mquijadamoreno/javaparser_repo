@@ -7,10 +7,12 @@ import java.util.List;
 
 public class TestClass extends TestClassA {
 	
+	private final String att3 = "pepega";
 	private String att1;
 	private Integer att2;
 	private List<String> stringList;
 	private LinkedList<String> stringList2;
+	private Integer number = 1234;
 	
 	public TestClass() {
 		this.att1 = "testClass att1";
@@ -50,6 +52,7 @@ public class TestClass extends TestClassA {
 		if(this.att1==lul) {
 			System.out.println("lul");
 		}
+		System.out.println(number);
 	}
 	
 	public void method1(Integer integer) {
